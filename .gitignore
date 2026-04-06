@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.pyc
+
+# Data folders (VERY IMPORTANT)
+data/
+outputs/
+
+# Data files
+*.csv
+*.zip
+*.gzip
+*.7z
+
+# Models
+*.pt
+*.pth
+*.h5
+
+# Experiment / temp
+.hypothesis/
+.kiro/
+
+# Env
+.env
+
+# OS / IDE
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

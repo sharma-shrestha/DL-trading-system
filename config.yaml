@@ -1,0 +1,78 @@
+# BTC RL Trading System — Central Configuration
+# All hyperparameters and file paths are defined here.
+# No magic numbers should appear in source code.
+
+data:
+  # Path to the compressed BTCUSDT dataset archive
+  archive_path: "C:/Users/Lenovo/Downloads/BTCUSDT.csv.7z"
+  # Directory where the archive will be extracted
+  extract_dir: "data/raw/"
+  # Fraction of data used for training (remainder is test)
+  train_ratio: 0.8
+  # Cap on training samples (set to null to use all data)
+  max_train_samples: 50000
+
+features:
+  # Rolling window size for volatility (std of returns) computation
+  volatility_window: 20
+
+windows:
+  # Number of time steps in each sliding window fed to models/env
+  window_size: 50
+
+diffusion:
+  # Number of past time steps used as conditioning context
+  context_len: 100
+  # Number of future time steps to generate (must be in [10, 50], and < window_size)
+  future_steps: 10
+  # Number of diffusion timesteps used during training (DDPM)
+  train_timesteps: 1000
+  # Number of DDIM steps used during inference (faster than training)
+  inference_steps: 50
+  # Mini-batch size for diffusion model training
+  batch_size: 256
+  # Number of training epochs for the diffusion model
+  epochs: 100
+  # Path where the trained diffusion model checkpoint is saved
+  checkpoint_path: "outputs/models/diffusion.pt"
+
+env:
+  # Proportional transaction cost applied on each trade (e.g. 0.001 = 0.1%)
+  transaction_cost: 0.001
+  # Weight applied to the risk penalty component of the reward
+  risk_penalty_weight: 0.1
+  # Small penalty applied each step a position is held (encourages decisive trading)
+  holding_penalty: 0.0001
+  # Episode terminates if portfolio value drops below this fraction of initial balance
+  min_portfolio_value: 0.5
+  # Starting portfolio balance in USD
+  initial_balance: 10000.0
+
+agents:
+  strategy_selector:
+    # RL algorithm for the Level-1 strategy selector
+    algorithm: "PPO"
+    # Total environment timesteps to train the strategy selector
+    total_timesteps: 200000
+    # Path prefix for saving/loading the strategy selector model
+    save_path: "outputs/models/strategy_selector"
+  trade_executor:
+    # RL algorithm for the Level-2 trade executor ("PPO" or "SAC")
+    algorithm: "PPO"
+    # Total environment timesteps to train the trade executor
+    total_timesteps: 200000
+    # Path prefix for saving/loading the trade executor model
+    save_path: "outputs/models/trade_executor"
+  # RL-only agents get fewer steps — fair since they have less information
+  rl_only_timesteps_multiplier: 0.6
+
+backtest:
+  # Minimum number of test-split steps; a warning is issued if below this
+  min_test_steps: 1000
+
+evaluation:
+  # Directory where PNG graphs and the performance report are saved
+  output_dir: "outputs/reports/"
+
+# Global random seed for full reproducibility across all components
+seed: 42

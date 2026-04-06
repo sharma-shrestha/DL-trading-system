@@ -1,0 +1,9 @@
+torch>=2.0
+stable-baselines3>=2.0
+gymnasium>=0.29
+pandas>=2.0
+numpy>=1.24
+pyyaml>=6.0
+py7zr>=0.20
+matplotlib>=3.7
+hypothesis>=6.0
