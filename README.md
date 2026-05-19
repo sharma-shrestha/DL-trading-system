@@ -1,16 +1,8 @@
-\# BTC RL Trading System — Full Project Documentation
 
 
 
-This document explains the entire project in simple words: what each file does, what formulas are used, how training works, and how everything connects.
 
-
-
-\---
-
-
-
-\## What is this project?
+ What is this project?
 
 
 
